@@ -1,0 +1,86 @@
+Terraform Setup for AWS EC2 on Windows (Step-by-Step Guide)
+
+Step 1: Install Terraform on Windows
+
+Download Terraform:
+
+Go to the Terraform Official Site.
+Download the Windows (AMD64) version.
+Extract the .zip file to a convenient location (e.g., C:\Terraform).
+Add Terraform to System PATH:
+
+Open System Properties → Click Advanced → Environment Variables.
+Under System Variables, select Path → Click Edit.
+Click New, then Add the extracted Terraform folder path (e.g., C:\Terraform).
+Click OK and restart Command Prompt (cmd).
+Verify Installation:
+
+Open Command Prompt and run:
+terraform -version
+If installed correctly, Terraform will display its version.
+Step 2: Install AWS CLI & Set Up Credentials
+
+Download & Install AWS CLI:
+
+Download from AWS CLI Download.
+Run the installer and complete the installation.
+Verify AWS CLI Installation:
+
+Open Command Prompt and run:
+aws --version
+Configure AWS Credentials:
+
+Run the following command:
+aws configure
+Enter your AWS Access Key and Secret Key (from the AWS IAM Console).
+Step 3: Create a Terraform Configuration File
+
+Create a New Folder for Terraform Project:
+
+Open Command Prompt and run:
+mkdir terraform-ec2
+cd terraform-ec2
+Create the Terraform Configuration File (main.tf):
+
+Open Notepad or VS Code and paste the following code:
+provider "aws" {
+region = "us-east-1"
+}
+
+resource "aws_instance" "my_ec2" {
+ami = "ami-0c55b159cbfafe1f0"
+instance_type = "t2.micro"
+key_name = "My_File_Storage"
+tags = {
+Name = "Terraform-Instance"
+}
+}
+
+Save the file as main.tf inside the terraform-ec2 folder.
+
+Step 4: Initialize & Deploy Terraform
+
+Open Command Prompt in the terraform-ec2 folder.
+
+Run the following commands one by one:
+
+Initialize Terraform (Download necessary plugins)
+terraform init
+
+Preview the infrastructure plan
+terraform plan
+
+Deploy the EC2 instance to AWS
+terraform apply -auto-approve
+
+Step 5: Connect to the EC2 Instance
+
+Find the Public IP of Your EC2 Instance:
+terraform output
+
+Connect to EC2 Using SSH (PowerShell or Git Bash):
+ssh -i My_File_Storage.pem ubuntu@your-ec2-public-ip
+
+Step 6: Destroy the Infrastructure (If Needed)
+If you want to delete the EC2 instance run:
+terraform destroy -auto-approve
